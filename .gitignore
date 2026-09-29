@@ -1,0 +1,7 @@
+# Secrets locaux — ne JAMAIS committer (cf. README, « Configuration »)
+.env
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
