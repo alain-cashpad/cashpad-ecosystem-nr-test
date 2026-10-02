@@ -40,9 +40,15 @@ Versions : la doc annonce 2.10 (2.12 pour `users_summary` et `cashcontainers`) ;
 | Action | Champs | Probable |
 |---|---|---|
 | `sales_summary` | `sales[].location`, `consumptionmode`, `period`, `receipt` ; idem sous `total_sales` | toujours `null` ou absents : ventilation non implémentée ? |
-| `archive_content` | `cashmanager_snapshots`, `drinkdispenser*`, `receipts[].loyaltycard`, `receipts[].external_loyalty`, `payments[].lunch_voucher`, `cashmovements[].transaction_id`, `consumptionmode.staff`, `discount.offered`, `discount.context.{loyalty, loss, reward_*}`, `items[].discount.*`, `addons[].product` | fonctions non utilisées sur le site, à vérifier dans le code |
+| `archive_content` | `cashmanager_snapshots`, `drinkdispenser*`, `receipts[].loyaltycard`, `receipts[].external_loyalty`, `payments[].lunch_voucher`, `consumptionmode.staff`, `discount.offered`, `discount.context.{loyalty, loss, reward_*}`, `items[].discount.*`, `addons[].product` | fonctions non utilisées sur le site, à vérifier dans le code |
 | `cashcontainers` | `cashcontainer.user`, `cashcontainer.terminal`, `sessions[].inventory`, `main_inventory`, `payments[].creditnotes`, `transactions[].creditnote` | inventaires et avoirs non utilisés sur le site ? |
 | `users_summary` | `inventories` | idem |
 
 `external_loyalty` a son test (BOV2KABAN-2121) : jamais présent sur ces 80 archives, il ne
 l'est que sur les tickets portant une fidélité externe.
+
+## Perdu entre la caisse et BOV2
+
+| Action | Champ | Constat |
+|---|---|---|
+| `archive_content` | `cashmovements[].transaction_id` | la caisse porte un `transactionId` sur 9 mouvements sur 9 (12 archives) ; BOV2 ne le sert jamais, alors que la doc le documente. Relevé par `test_nr_salesdata_archive_content`, non figé |
