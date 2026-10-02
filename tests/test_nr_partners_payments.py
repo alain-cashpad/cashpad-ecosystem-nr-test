@@ -20,23 +20,26 @@ paiement. `method` = mot-clé (`cash`, `creditcard`, `tip`).
 
 ⚠️ CRÉE TROIS TICKETS sur la caisse à chaque run (`tickets_guard`, NR_ALLOW_WRITES=1).
 
-## Rouge sur le staging au 2026-09-29 — défaut BOV2, pas du test
+## Vert sur le staging le 2026-10-02 — rouge du 2026-09-29 au 2026-10-01
 
-Observé le 2026-09-29 sur le staging (ticket 3219) : `inject_payment` et
+Pour un ticket non archivé, BOV2 lit le ticket EN DIRECT sur la caisse via
+worker-digested-data (`findReceiptForExport` → `getLiveReceipt`) ; `inject_payment`
+en dépend depuis BOV2KABAN-1732 (2025-10-13).
+
+Rouge le 2026-09-29 sur le staging (ticket 3219) : `inject_payment` et
 `inject_payments` → 400 `internal communication error` (errorCode 5), et
 `check?receipt_id=` → 422 `Could not find receipt`, sur un ticket ouvert que la
-caisse connaît (`request_course` OK). Cause : pour un ticket non archivé, BOV2 lit
-le ticket EN DIRECT sur la caisse via worker-digested-data (`findReceiptForExport`
-→ `getLiveReceipt`), et ce chemin échoue sur le staging ; `inject_payment` en
-dépend depuis BOV2KABAN-1732 (2025-10-13).
+caisse connaît (`request_course` OK). Cause : le worker staging tournait sur
+BOV2KABAN-2195 (`CustomerId` NullUuid sans `MarshalJSON`) : `getLiveReceipt`
+répondait sans `items`. C'est le défaut parti en PROD le 2026-10-01 (08:30 → 10:14,
+paiement à table Sunday / Flunch cassé, cf. test_nr_partners_check_live_receipt).
+La préprod était verte le 2026-09-29 (ticket 3220) parce que 2195 n'y était pas
+encore (arrivé sur la branche le 2026-09-30 16:53).
 
-Même scénario en PRÉPROD le 2026-09-29 (ticket 3220) : `inject_payment` puis
-`inject_payments` → 200 `{succeeded: true, version: "2.3"}`, relus 2 × 3500 en
-Espèces. Choix acté avec le dev : ce fichier ÉCHOUE FRANCHEMENT sur le staging tant
-que le défaut existe (pas de xfail).
-
-Les vérifications caisse (vouchers, montants ×1000, `discountAmount`) sont PORTÉES
-de l'ancien repo, non ré-observées le 2026-09-29 (pas de VPN ce jour-là).
+Corrigé par BOV2KABAN-2344 (`NullUuid.MarshalJSON`), déployé sur le staging le
+2026-10-01 14:35. Run vert du 2026-10-02 : 3/3, vouchers, montants ×1000,
+`discountAmount` et pourboire négatif d'`inject_payments` relus sur la caisse.
+Choix maintenu : ce fichier échoue franchement si le défaut revient (pas de xfail).
 
 Lancer :
     NR_ALLOW_WRITES=1 uv run --with pytest --with httpx --with python-dotenv \

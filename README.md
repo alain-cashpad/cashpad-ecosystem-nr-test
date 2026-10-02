@@ -41,7 +41,7 @@ Différences voulues avec les anciens repos :
 - **La config du connecteur est lue puis restaurée**, jamais réécrite depuis un fichier figé.
 - **Chaque en-tête distingue l'observé du porté** : ce qui a été ré-observé le 2026-09-29 et ce qui est repris de l'ancien repo sans re-mesure (lecture caisse, liste BO des commandes).
 
-`test_nr_partners_payments` est **rouge sur le staging** au 2026-09-29 : défaut BOV2 sur la lecture live d'un ticket ouvert (cf. son en-tête), vert en préprod. Choix acté : il échoue franchement, sans xfail.
+`test_nr_partners_payments` a été **rouge sur le staging** du 2026-09-29 au 2026-10-01 : `getLiveReceipt` sans `items` (BOV2KABAN-2195 sans BOV2KABAN-2344), le défaut parti en prod le 2026-10-01. **Vert depuis le 2026-10-02** (2344 déployé). Choix acté : il échoue franchement, sans xfail.
 
 Les payloads Deliverect vivent dans `tests/payloads/deliverect/*.json.tmpl` : identifiants, dates et location sont substitués à chaque run (`_nr.deliverect_order`).
 
