@@ -30,7 +30,7 @@ Réécrits le 2026-09-29 depuis les deux anciens repos, aux conventions de celui
 | `test_nr_partners_order_menu` | `partner_order_with_menu` | **ticket payé** |
 | `test_nr_partners_course_request` | `partner_course_request` | **ticket ouvert** |
 | `test_nr_partners_payments` | `inject_single_payment`, `…_negative_payment`, `inject_multiple_payments` | **3 tickets + paiements** |
-| `test_nr_partners_check_live_receipt` | aucun : incident prod du 2026-10-01 (`check` d'un ticket live, `getLiveReceipt` sans `items`) | **2 tickets ouverts** |
+| `test_nr_partners_check_live_receipt` | aucun : incident prod du 2026-10-01 (`check` d'un ticket live, `getLiveReceipt` sans `items`) | **3 tickets ouverts** |
 | `test_nr_deliverect_orders` | `deliverect_order`, `…_with_menu`, `…_with_product_options` | **3 tickets payés** |
 | `test_nr_deliverect_order_missing_fee_products` | `…_no_delivery_fees_product`, `…_no_service_charge_product` | **modifie la config du connecteur**, restaurée en `finally` |
 

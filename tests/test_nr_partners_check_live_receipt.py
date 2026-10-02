@@ -3,14 +3,14 @@ from __future__ import annotations
 """
 Test de non-régression — incident PROD du 2026-10-01 (paiement à table Sunday / Flunch)
 
-Chaque run pousse DEUX tickets non payés (donc non archivés), puis lit leur note par
+Chaque run pousse TROIS tickets non payés (donc non archivés), puis lit leur note par
 l'action `check` de la Partner API :
 
     POST {base}/api/orders/v1/{INSTALLATION_ID}/cashpad/push_order_sync
     GET  {base}/api/payments/v2/{INSTALLATION_ID}/check?receipt_id=<UUID>
     GET  {base}/api/payments/v2/{INSTALLATION_ID}/check?sequential_id=<N>
 
-⚠️ CRÉE DEUX TICKETS NON PAYÉS sur la caisse à chaque run (`tickets_guard`,
+⚠️ CRÉE TROIS TICKETS NON PAYÉS sur la caisse à chaque run (`tickets_guard`,
 NR_ALLOW_WRITES=1). Ils restent ouverts : la suite ne les encaisse pas.
 
 ## Le chemin gardé
@@ -66,9 +66,11 @@ VERT sur le staging le 2026-10-02 (worker BOV2KABAN-2344, build 71), deux runs
 (ticket à addons du 1er run : 3263) : forme de `data` observée sur ticket live, quantités et prix en millièmes, addons
 imbriqués sous leur produit (`items[].addons[].addon.id`). Relu sur la caisse (3263) :
 mêmes produit et addons ; la caisse compte la quantité d'un addon en UNITÉS (1), `check`
-en millièmes (1000). Le `customer` {lastname, firstname} du push ne rattache AUCUN
-client au ticket (`customer` nul sur la caisse) : un ticket live avec un vrai
-`CustomerId` n'est pas couvert. Catalogue (burger et ses addons) : celui de
+en millièmes (1000). Un `customer` {lastname, firstname} seul ne rattache AUCUN
+client au ticket (`customer` nul sur la caisse) : le serializer partners ne prend que
+`id` / `pos_id` / `external_id`. test_04 pousse donc `customer.id` d'un client existant
+du site (premier client actif de get_customers) et vérifie sur la caisse que le ticket
+le porte (`receipt.customer`, relu le 2026-10-02 sur le ticket 3266, vert). Catalogue (burger et ses addons) : celui de
 payloads/deliverect/order_with_options, même site cashpad-8007 ; non revérifié en
 préprod.
 
@@ -87,7 +89,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _nr import assert_pushed, partner_call, push_order, tickets_guard, unique_order_id
+from _nr import assert_pushed, device_receipt, partner_call, push_order, tickets_guard, unique_order_id
 
 pytestmark = tickets_guard()
 
@@ -130,6 +132,22 @@ def items_by_product(data: dict) -> dict:
 @pytest.fixture(scope="module")
 def simple_ticket():
     return push_open_ticket("simple", [{**POUTINE, "quantity": 1, "production_level": 0}], {})
+
+
+def site_customer() -> dict:
+    """Un client existant et non supprimé du site, lu par get_customers (seed du site)."""
+    status, payload = partner_call("customers", 1, "get_customers")
+    assert status == 200 and (payload or {}).get("succeeded") is True, f"get_customers : HTTP {status} — {payload!r}"
+    customers = [c for c in payload.get("customers") or [] if c.get("id") and not c.get("deleted")]
+    assert customers, "aucun client actif sur le site : cas « ticket avec client » non exécutable"
+    return customers[0]
+
+
+@pytest.fixture(scope="module")
+def customer_ticket():
+    customer = site_customer()
+    pushed = push_open_ticket("customer", [{**POUTINE, "quantity": 1, "production_level": 0}], {"id": customer["id"]})
+    return pushed, customer
 
 
 @pytest.fixture(scope="module")
@@ -182,3 +200,17 @@ def test_03_check_live_receipt_with_addons(addons_ticket):
             assert got.get("unit_price") == round(addon["price"] * 1000), f"prix addon (millièmes) : {got!r}"
     expected = round((BURGER["price"] + sum(a["price"] for a in ADDONS)) * 1000)
     assert lines[0].get("final_price") == expected, f"final_price {lines[0].get('final_price')!r}, attendu {expected}"
+
+
+def test_04_check_live_receipt_with_customer(customer_ticket):
+    """Ticket live AVEC un vrai `CustomerId` : l'autre branche de l'encodage JSON de
+    `NullUuid` (statut Present), que les tickets sans client n'exercent pas."""
+    ticket, customer = customer_ticket
+    on_device = device_receipt(ticket["receipt_sequential_id"]).get("customer")
+    assert str(on_device or "").lower() == customer["id"].lower(), (
+        f"client {customer['id']} non rattaché au ticket sur la caisse (customer={on_device!r}) : "
+        "le cas « ticket live avec CustomerId » n'est pas exercé"
+    )
+    data = check(receipt_id=ticket["receipt_id"])
+    assert_is_ticket(data, ticket)
+    assert items_by_product(data).get(POUTINE["pos_id"].upper()), f"Poutine absente : {data['items']!r}"
