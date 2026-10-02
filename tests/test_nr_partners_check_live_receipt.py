@@ -60,10 +60,15 @@ des tickets live, sur les deux branches de `GetLiveReceipt`, avec et sans addons
 Même symptôme sur le staging le 2026-09-29 (cf. test_nr_partners_payments, ticket
 3219) : `check?receipt_id=` → 422 `Could not find receipt` sur un ticket ouvert ;
 préprod verte le même jour (ticket 3220), mais AVANT l'arrivée de 2195 sur la préprod.
-Ce test n'a de valeur en préprod qu'une fois 2195 + 2344 DÉPLOYÉS. Les assertions sur le contenu de `data`
-(`items[].product.id`, quantités et prix en millièmes) reprennent la forme relevée le
-2026-10-02 sur un ticket ARCHIVÉ du staging (seq 3196) ; sur un ticket live, la forme
-n'a pas encore été observée verte. Catalogue (burger et ses addons) : celui de
+Ce test n'a de valeur en préprod qu'une fois 2195 + 2344 DÉPLOYÉS.
+
+VERT sur le staging le 2026-10-02 (worker BOV2KABAN-2344, build 71), deux runs
+(ticket à addons du 1er run : 3263) : forme de `data` observée sur ticket live, quantités et prix en millièmes, addons
+imbriqués sous leur produit (`items[].addons[].addon.id`). Relu sur la caisse (3263) :
+mêmes produit et addons ; la caisse compte la quantité d'un addon en UNITÉS (1), `check`
+en millièmes (1000). Le `customer` {lastname, firstname} du push ne rattache AUCUN
+client au ticket (`customer` nul sur la caisse) : un ticket live avec un vrai
+`CustomerId` n'est pas couvert. Catalogue (burger et ses addons) : celui de
 payloads/deliverect/order_with_options, même site cashpad-8007 ; non revérifié en
 préprod.
 
@@ -161,10 +166,19 @@ def test_02_check_live_receipt_by_sequential_id(simple_ticket):
 
 
 def test_03_check_live_receipt_with_addons(addons_ticket):
-    """Les addons sont ce que `items.reduce(...)` éclate en lignes à part (parentProductId)."""
+    """Les addons sont ce que `items.reduce(...)` éclate (parentProductId) ; `check` les
+    rend ensuite IMBRIQUÉS sous leur produit : `items[].addons[].addon.id`, quantité en
+    millièmes, `unit_price` absent pour un addon gratuit (observé le 2026-10-02, ticket 3263)."""
     data = check(receipt_id=addons_ticket["receipt_id"])
     assert_is_ticket(data, addons_ticket)
-    by_product = items_by_product(data)
-    assert by_product.get(BURGER["pos_id"].upper()), f"burger absent : {list(by_product)}"
+    lines = items_by_product(data).get(BURGER["pos_id"].upper())
+    assert lines, f"burger absent : {[i.get('product') for i in data['items']]}"
+    addons = {str((a.get("addon") or {}).get("id", "")).upper(): a for a in lines[0].get("addons") or []}
     for addon in ADDONS:
-        assert by_product.get(addon["pos_id"].upper()), f"addon {addon['pos_id']} absent : {list(by_product)}"
+        got = addons.get(addon["pos_id"].upper())
+        assert got, f"addon {addon['pos_id']} absent du burger : {list(addons)}"
+        assert got.get("quantity") == addon["quantity"] * 1000, f"quantité addon (millièmes) : {got!r}"
+        if addon["price"]:
+            assert got.get("unit_price") == round(addon["price"] * 1000), f"prix addon (millièmes) : {got!r}"
+    expected = round((BURGER["price"] + sum(a["price"] for a in ADDONS)) * 1000)
+    assert lines[0].get("final_price") == expected, f"final_price {lines[0].get('final_price')!r}, attendu {expected}"
