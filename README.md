@@ -52,6 +52,8 @@ Différences voulues avec les anciens repos :
 
 **Notifications sortantes non couvertes** (déclenchement manuel, aucun test ne peut les produire seul) : `stock_sync` (changement de stock remonté par la caisse), `menu_push_auto` (modification du menu / référentiel), `order_notify_readiness` (commande partenaire passée « prête » sur la caisse ou le KDS), `new-archive-created` (clôture d'archive). Seule `order_new_receipt_event` l'est (`test_nr_partners_receipt_event_notification`). Au 2026-10-02, obypay staging (site 4652) pointe sur `management-api.obypay.com`, l'API qu'appelle aussi la prod.
 
+**Anomalies relevées sans être figées** (défauts BOV2, configurations douteuses, comportements à confirmer) : [docs/anomalies.md](docs/anomalies.md).
+
 Les payloads Deliverect vivent dans `tests/payloads/deliverect/*.json.tmpl` : identifiants, dates et location sont substitués à chaque run (`_nr.deliverect_order`).
 
 ### Tests générés par `/cp-test`
