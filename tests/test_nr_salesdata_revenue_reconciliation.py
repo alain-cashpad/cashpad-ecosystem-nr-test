@@ -50,31 +50,23 @@ Lancer :
 """
 
 import collections
-import json
-from pathlib import Path
-
 import httpx
 import pytest
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from _nr import TIMEOUT_S, device_base, partner_call, site
-from _target import partner_env, target
+from _nr import TIMEOUT_S, archive_range, device_base, digested_data, salesdata
 
 ARCHIVE_COUNT = 12
 MONEY = 1000  # millièmes d'euro, caisse et BO
 TAX_RATE = 10  # dixièmes de % côté BO (100 → 10 %)
 TOL_TTC, TOL_HT, TOL_VAT = 0.01, 0.02, 0.05
-DD_CONFIG = Path.home() / ".config" / "cashpad" / "digested-data.json"
 
 
 # ── BO (Partner API salesdata) ──
 
-def bo_data(action: str, **params):
-    status, payload = partner_call("salesdata", 2, action, params=params or None)
-    assert status == 200, f"salesdata {action} {params} : HTTP {status} — {str(payload)[:300]}"
-    return payload.get("data", payload) if isinstance(payload, dict) else payload
+bo_data = salesdata
 
 
 @pytest.fixture(scope="module")
@@ -130,19 +122,7 @@ def pos(scope, pos_list) -> dict:
 # ── Analytics (digested-data public) ──
 
 def dd_get(resource: str, lo: int, hi: int, extra: list[tuple[str, str]]) -> list[dict]:
-    if not DD_CONFIG.exists():
-        pytest.skip(f"{DD_CONFIG} absent — analytics non lisible")
-    token = ((json.loads(DD_CONFIG.read_text()).get("envs") or {}).get(target()) or {}).get("token", "").strip()
-    if not token:
-        pytest.skip(f"pas de `envs.{target()}.token` dans {DD_CONFIG}")
-    params = [("computedTimeRanges[cpType]", "archiveRanges"), ("computedTimeRanges[timezone]", "Europe/Paris"),
-              ("computedTimeRanges[cpFrom]", str(lo)), ("computedTimeRanges[cpTo]", str(hi))] + extra
-    url = f"{partner_env()['base_url']}/p/digested-data/public/1/site/{site()['site_id']}/{resource}"
-    response = httpx.get(url, params=params, headers={"Authorization": f"Bearer {token.removeprefix('Bearer ')}"},
-                         timeout=TIMEOUT_S)
-    assert response.status_code == 200, f"digested-data {resource} : HTTP {response.status_code} — {response.text[:300]}"
-    payload = response.json()
-    return payload if isinstance(payload, list) else payload.get("data") or []
+    return digested_data(resource, archive_range(lo, hi) + extra)
 
 
 @pytest.fixture(scope="module")

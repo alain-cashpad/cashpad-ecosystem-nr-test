@@ -334,3 +334,40 @@ def es_search(*phrases: str, start: datetime, end: datetime, service: str | None
     cols = [c["name"] for c in payload.get("columns", [])]
     rows = [dict(zip(cols, values)) for values in payload.get("values", [])]
     return sorted(rows, key=lambda r: r["@timestamp"])
+
+
+# ── Données de ventes : BO (Partner API salesdata) et analytics (digested-data public) ──
+
+DD_CONFIG = Path.home() / ".config" / "cashpad" / "digested-data.json"
+
+
+def salesdata(action: str, **params):
+    """`data` d'une action salesdata/v2 (montants en MILLIÈMES d'euro)."""
+    status, payload = partner_call("salesdata", 2, action, params=params or None)
+    assert status == 200, f"salesdata {action} {params} : HTTP {status} — {str(payload)[:300]}"
+    return payload.get("data", payload) if isinstance(payload, dict) else payload
+
+
+def archive_range(lo: int, hi: int) -> list[tuple[str, str]]:
+    return [("computedTimeRanges[cpType]", "archiveRanges"), ("computedTimeRanges[timezone]", "Europe/Paris"),
+            ("computedTimeRanges[cpFrom]", str(lo)), ("computedTimeRanges[cpTo]", str(hi))]
+
+
+def digested_data(resource: str, params: list[tuple[str, str]]) -> list[dict]:
+    """Lignes d'une ressource de l'API analytics publique (montants en euros décimaux).
+
+    Jeton : `envs.<cible>.token` de ~/.config/cashpad/digested-data.json (skill
+    bov2-digested-data), sans le préfixe « Bearer » éventuel — doublé, l'API répond
+    400 AUTH_TOKEN_MISSING. Skip si absent."""
+    if not DD_CONFIG.exists():
+        pytest.skip(f"{DD_CONFIG} absent — analytics non lisible")
+    token = ((json.loads(DD_CONFIG.read_text()).get("envs") or {}).get(target()) or {}).get("token", "").strip()
+    if token.lower().startswith("bearer "):
+        token = token[7:].strip()
+    if not token:
+        pytest.skip(f"pas de `envs.{target()}.token` dans {DD_CONFIG}")
+    url = f"{partner_env()['base_url']}/p/digested-data/public/1/site/{site()['site_id']}/{resource}"
+    response = httpx.get(url, params=params, headers={"Authorization": f"Bearer {token}"}, timeout=TIMEOUT_S)
+    assert response.status_code == 200, f"digested-data {resource} : HTTP {response.status_code} — {response.text[:300]}"
+    payload = response.json()
+    return payload if isinstance(payload, list) else payload.get("data") or []
