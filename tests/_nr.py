@@ -16,6 +16,10 @@ allowlist anti-prod, couple partenaire) et n'ajoutent que ce qui manque :
                        (sign-in sso, repli `BOV2_TOKEN`). Liste des commandes d'un
                        connecteur, config.
   - `tickets_guard()`  garde des modules qui CRÉENT UN TICKET sur la caisse.
+  - `es_search()`      logs Elasticsearch de la cible, en LECTURE (ES|QL, clé API en
+                       lecture seule du skill bov2-elastic-logs, ~/.config/cashpad/
+                       elastic.json). Seul moyen d'observer une notification SORTANTE
+                       vers un partenaire.
 
 Identifiants de site et de connecteur : table `SITES` ci-dessous, par cible. Ce ne
 sont pas des secrets (relevés dans les anciens repos, 2025), mais ils sont propres
@@ -290,3 +294,43 @@ def tickets_guard() -> pytest.MarkDecorator:
         os.getenv("NR_ALLOW_WRITES") != "1",
         reason=f"crée des tickets sur la caisse ({target()}) — NR_ALLOW_WRITES=1 pour l'autoriser",
     )
+
+
+# ── Logs Elasticsearch (lecture seule) ──
+
+ES_CONFIG = Path.home() / ".config" / "cashpad" / "elastic.json"
+# Préfixe d'index par cible : le staging s'appelle `dev` dans les logs. Pas de prod.
+ES_INDEX = {"staging": "filebeat-dev-*", "preprod": "filebeat-preprod-*"}
+
+
+def _esql_literal(value: str) -> str:
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def es_search(*phrases: str, start: datetime, end: datetime, service: str | None = None,
+              trace_id: str | None = None, limit: int = 500) -> list[dict]:
+    """Lignes de log de la cible entre `start` et `end` dont `message` contient TOUTES les
+    `phrases` (MATCH_PHRASE). Triées par date côté client : avec SORT, ES|QL renvoie
+    `message` à null sur une partie des lignes (mesuré par le skill le 2026-09-30).
+    Skip si la clé du skill bov2-elastic-logs est absente."""
+    if not ES_CONFIG.exists():
+        pytest.skip(f"{ES_CONFIG} absent — logs Elasticsearch non lisibles")
+    conf = json.loads(ES_CONFIG.read_text())
+    where = ["@timestamp >= ?_tstart", "@timestamp < ?_tend"]
+    if service:
+        where.append(f"`event.dataset.keyword` == {_esql_literal(service)}")
+    if trace_id:
+        where.append(f"`trace.id.keyword` == {_esql_literal(trace_id)}")
+    where += [f"MATCH_PHRASE(message, {_esql_literal(p)})" for p in phrases]
+    query = (f"FROM {ES_INDEX[target()]} | WHERE {' AND '.join(where)}"
+             f" | KEEP `@timestamp`, `event.dataset`, `log.level`, `trace.id`, message | LIMIT {limit}")
+    iso = lambda d: d.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+    response = httpx.post(f"{conf['es_url'].rstrip('/')}/_query", params={"format": "json"},
+                          headers={"Authorization": f"ApiKey {conf['api_key']}"},
+                          json={"query": query, "params": [{"_tstart": iso(start)}, {"_tend": iso(end)}]},
+                          timeout=TIMEOUT_S)
+    assert response.status_code == 200, f"Elasticsearch : HTTP {response.status_code} — {response.text[:300]}"
+    payload = response.json()
+    cols = [c["name"] for c in payload.get("columns", [])]
+    rows = [dict(zip(cols, values)) for values in payload.get("values", [])]
+    return sorted(rows, key=lambda r: r["@timestamp"])
