@@ -129,7 +129,9 @@ def test_03_multiple_payments_with_tip_and_discount():
 
     receipt = device_receipt(ticket["receipt_sequential_id"])
     by_voucher = payments_by_voucher(receipt)
-    for p in payments + [tip]:
+    # Parité BOV1 (api/v2/payments_controller.rb, inject_payments l. 252-257) : le `tip` objet est
+    # ajouté aux paiements en NÉGATIF. Le `tip_amount` du paiement simple (test_01) reste positif.
+    for p in payments + [{**tip, "amount": -tip["amount"]}]:
         amounts = [x.get("amount") for x in by_voucher.get(p["transaction_id"], [])]
         assert round(p["amount"] * 1000) in amounts, (
             f"{p['method']} {p['amount']} € attendu en {round(p['amount'] * 1000)} sous le voucher "
