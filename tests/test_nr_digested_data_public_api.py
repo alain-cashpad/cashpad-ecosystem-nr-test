@@ -31,6 +31,13 @@ composants à 0 €. Règle : analytics = `carte` + `menu` si la ligne est un me
 staging, archives 412 → 423 : 34 produits sur 34, et les 10 composants du BO font
 1 118,70 €, le prix du `Big Boss` côté analytics.
 
+Flag du site : 4652 a `useMenuTaxDistribution: true` (`spaces.sites.config`). Dans le
+code lu le 2026-10-02 (checkout local, pas forcément la version déployée), seul `check`
+le lit (`partner-payment-serializer.ts`, champs « valeur du menu ») ; `products_summary`
+répartit à partir de `finalTaxDistribution`, que worker-digested-data calcule toujours,
+et l'analytics ne le lit pas. La règle ci-dessus ne devrait donc pas en dépendre : NON
+vérifié avec le flag à false. Sur un autre site, relever ce flag avant de conclure.
+
 ## Périmètres figés (staging, cashpad-8007, site 4652)
 
 - archives `ARCHIVES` (412 → 423, closes) : 34 produits, 5 moyens de paiement (CB 46 /
