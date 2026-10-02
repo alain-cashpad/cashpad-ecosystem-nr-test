@@ -44,6 +44,8 @@ Différences voulues avec les anciens repos :
 
 `test_nr_partners_payments` a été **rouge sur le staging** du 2026-09-29 au 2026-10-01 : `getLiveReceipt` sans `items` (BOV2KABAN-2195 sans BOV2KABAN-2344), le défaut parti en prod le 2026-10-01. **Vert depuis le 2026-10-02** (2344 déployé). Choix acté : il échoue franchement, sans xfail.
 
+**Notifications sortantes non couvertes** (déclenchement manuel, aucun test ne peut les produire seul) : `stock_sync` (changement de stock remonté par la caisse), `menu_push_auto` (modification du menu / référentiel), `order_notify_readiness` (commande partenaire passée « prête » sur la caisse ou le KDS), `new-archive-created` (clôture d'archive). Seule `order_new_receipt_event` l'est (`test_nr_partners_receipt_event_notification`). Au 2026-10-02, obypay staging (site 4652) pointe sur `management-api.obypay.com`, l'API qu'appelle aussi la prod.
+
 Les payloads Deliverect vivent dans `tests/payloads/deliverect/*.json.tmpl` : identifiants, dates et location sont substitués à chaque run (`_nr.deliverect_order`).
 
 ### Tests générés par `/cp-test`
