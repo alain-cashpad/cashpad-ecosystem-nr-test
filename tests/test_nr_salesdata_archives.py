@@ -10,6 +10,7 @@ LECTURE SEULE.
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/archives.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.17, `timezone` ; chaque archive a `id`, `sequential_id` entier unique, `range_begin_date` ≤ `range_end_date` (ISO UTC) |
 | test_02 | `start_sequential_id` est une borne INCLUSIVE : la page commence à N et = la liste complète filtrée |
 | test_03 | `start_sequential_id` au-delà de la dernière archive → 200 et liste vide (pas d'erreur) |
@@ -28,9 +29,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import SCOPE_COUNT, archives, assert_wrong_token_refused, call, data, device, pos_utc
+from _salesdata import SCOPE_COUNT, archives, assert_fields, assert_wrong_token_refused, call, data, device, pos_utc
 
 ISO_UTC = re.compile(r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
+
+
+def test_00_fields():
+    assert_fields("archives")
 
 
 def test_01_archive_list_shape():

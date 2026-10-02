@@ -9,6 +9,7 @@ LECTURE SEULE. Périmètre : les 12 dernières archives du BO.
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/users_summary.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.17 ; `id` et dates = ceux d'`archives` |
 | test_02 | `total_sales` = `total_sales` de `sales_summary` (TTC, HT, tickets, couverts) |
 | test_03 | Σ des lignes par vendeur = `total_sales` |
@@ -29,7 +30,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
+from _salesdata import assert_fields, assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
 
 FIELDS = ("sales_incl_taxes", "sales_excl_taxes", "nb_receipts", "nb_seats")
 
@@ -37,6 +38,10 @@ FIELDS = ("sales_incl_taxes", "sales_excl_taxes", "nb_receipts", "nb_seats")
 @pytest.fixture(scope="module")
 def summaries() -> dict[int, dict]:
     return {seq: data("users_summary", sequential_id=seq) for seq in scope()}
+
+
+def test_00_fields():
+    assert_fields("users_summary")
 
 
 def test_01_archive_matches_the_list(summaries):

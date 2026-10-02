@@ -1,0 +1,474 @@
+{
+  "context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "context.administrative_code": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.server_name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.site_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.date_created": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_begin_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_end_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.consumptionmode": {
+    "required": false,
+    "types": [
+      "dict",
+      "null"
+    ]
+  },
+  "data.total_sales.consumptionmode.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.consumptionmode.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.consumptionmode.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.consumptionmode.staff": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "data.total_sales.nb_products": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total_sales.products[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].carte": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].carte.discount": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].carte.discount.discount_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.discount.discount_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.sales_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.sales_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].carte.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].category": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].category.external_id": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.total_sales.products[].category.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].category.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].menu": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].menu.discount": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].menu.discount.discount_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.discount.discount_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.sales_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.sales_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].menu.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].product": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].product.external_id": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.total_sales.products[].product.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].product.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].total": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].total.discount": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].total.discount.discount_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.discount.discount_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.sales_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.sales_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].total.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.products[].type": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].unit": {
+    "required": false,
+    "types": [
+      "dict",
+      "null"
+    ]
+  },
+  "data.total_sales.products[].unit.type": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.products[].unit.unit": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.total_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.total_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "succeeded": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "timezone": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "version": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  }
+}

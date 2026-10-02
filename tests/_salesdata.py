@@ -111,3 +111,89 @@ def pos_utc(ts: str | None) -> str | None:
     if not ts:
         return None
     return f"{ts[0:4]}-{ts[4:6]}-{ts[6:8]}T{ts[9:11]}:{ts[11:13]}:{ts[13:15]}Z"
+
+
+# ── Structure des réponses (test_00_fields de chaque fichier) ──
+
+import json as _json
+import re as _re
+from pathlib import Path as _Path
+
+SCHEMAS_DIR = _Path(__file__).parent / "schemas" / "salesdata"
+_DYNAMIC_KEY = _re.compile(r"^[0-9a-fA-F-]{36}$|^\d+$")  # clés d'objet qui sont des identifiants
+
+
+def _type(value) -> str:
+    return {bool: "bool", int: "int", float: "float", str: "str", dict: "dict", list: "list"}.get(type(value), "null")
+
+
+def walk(value, path: str, stats: dict):
+    """Accumule, par chemin, le nombre d'objets parents vus, les présences et les types."""
+    if isinstance(value, dict):
+        stats.setdefault(path, {"seen": 0, "present": 0, "types": set()})["seen"] += 1
+        for key, child in value.items():
+            name = "{id}" if _DYNAMIC_KEY.match(str(key)) else key
+            child_path = f"{path}.{name}" if path else name
+            entry = stats.setdefault(child_path, {"seen": 0, "present": 0, "types": set()})
+            entry["present"] += 1
+            entry["types"].add(_type(child))
+            walk(child, child_path, stats)
+    elif isinstance(value, list):
+        for item in value:
+            entry = stats.setdefault(f"{path}[]", {"seen": 0, "present": 0, "types": set()})
+            entry["present"] += 1
+            entry["types"].add(_type(item))
+            walk(item, f"{path}[]", stats)
+
+
+def payloads(action: str) -> list:
+    """Réponses brutes (enveloppe comprise) de l'action sur le périmètre."""
+    if action == "archives":
+        return [call("archives")[1]]
+    return [call(action, sequential_id=seq)[1] for seq in scope()]
+
+
+def structure(action: str) -> dict:
+    stats: dict = {}
+    payloads_seen = payloads(action)
+    for payload in payloads_seen:
+        walk(payload, "", stats)
+    out = {}
+    for path, s in stats.items():
+        if not path:
+            continue
+        parent = path[:-2] if path.endswith("[]") else (path.rsplit(".", 1)[0] if "." in path else "")
+        parent_seen = stats.get(parent, {}).get("seen", 0) if parent else len(payloads_seen)
+        required = path.endswith("[]") or (s["present"] == parent_seen and "null" not in s["types"])
+        out[path] = {"required": required, "types": sorted(s["types"])}
+    return out
+
+
+def parent_of(path: str) -> str:
+    if path.endswith("[]"):
+        return path[:-2]
+    return path.rsplit(".", 1)[0] if "." in path else ""
+
+
+def frozen(action: str) -> dict:
+    return _json.loads((SCHEMAS_DIR / f"{action}.json").read_text())
+
+
+def assert_fields(action: str):
+    """Échoue si un champ figé disparaît (obligatoire) ou change de type ; un champ NOUVEAU
+    n'est qu'affiché (un ajout ne casse pas un partenaire)."""
+    expected, seen = frozen(action), structure(action)
+    # Requis = présent dans chaque objet PARENT : sans parent objet dans l'échantillon (parent
+    # optionnel ou toujours null, ex. cashmovements[].category, products[].unit), son absence
+    # ne prouve rien.
+    missing = [p for p, e in expected.items() if e["required"] and not p.endswith("[]") and p not in seen
+               and (not parent_of(p) or set(seen.get(parent_of(p), {}).get("types", [])) & {"dict", "list"})]
+    absent_where_required = [p for p, e in expected.items() if e["required"] and p in seen and not seen[p]["required"]
+                             and "null" not in expected[p]["types"]]
+    retyped = [f"{p} : {sorted(set(seen[p]['types']) - set(e['types']))} (figé : {e['types']})"
+               for p, e in expected.items() if p in seen and set(seen[p]["types"]) - set(e["types"])]
+    added = sorted(set(seen) - set(expected))
+    if added:
+        print(f"{action} : champs nouveaux (non figés) : {added}")
+    assert not (missing or absent_where_required or retyped), (
+        f"{action} — disparus : {missing} ; plus toujours présents : {absent_where_required} ; type changé : {retyped}")

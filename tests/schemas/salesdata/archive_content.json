@@ -1,0 +1,1121 @@
+{
+  "context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "context.administrative_code": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.server_name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.site_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashmovements[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashmovements[].category": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements[].category.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].category.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].customer": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements[].customer.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].description": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].paymentmethod": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements[].paymentmethod.external_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].paymentmethod.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].paymentmethod.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].user": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashmovements[].user.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].user.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashmovements[].user.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.date_created": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.payments": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.payments[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.payments[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.payments[].nb_operations": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.payments[].paymentmethod": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.payments[].paymentmethod.external_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.payments[].paymentmethod.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.payments[].paymentmethod.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_begin_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_end_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].cancellation_reason": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.receipts[].cancelled": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "data.receipts[].consumptionmode": {
+    "required": false,
+    "types": [
+      "dict",
+      "null"
+    ]
+  },
+  "data.receipts[].consumptionmode.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].consumptionmode.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].consumptionmode.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].customer": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].customer.code": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].customer.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].customer.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].date_closed": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].date_created": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].date_pickup": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].delivery_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].discount": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].discount.context": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].discount.context.date": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].discount.context.reason": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].discount.context.user": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].discount.discount_amount": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].discount.discount_percentage": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].discount.discount_total": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].discount.predefineddiscount": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].discount.predefineddiscount.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].discount.predefineddiscount.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].items[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].addons": {
+    "required": false,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].items[].addons[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].addons[].addon": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].addons[].addon.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].addons[].addon.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].addons[].quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].addons[].taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].addons[].unit_price": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].discount": {
+    "required": false,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].discount.context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].discount.context.date": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].discount.context.reason": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].discount.context.user": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].discount.discount_percentage": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].discount.discount_total": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].final_price": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].menu": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].menu_value_incl_taxes": {
+    "required": false,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes": {
+    "required": false,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].menu_value_taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].product": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].product.external_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].product.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].product.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].items[].taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].items[].taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].items[].type": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].items[].unit_price": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].location": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].location.external_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].location.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].location.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].notes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].notes[]": {
+    "required": true,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.receipts[].owner": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].owner.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].owner.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].owner.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].payments[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].payments[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].payments[].date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].paymentmethod": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].payments[].paymentmethod.external_id": {
+    "required": false,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].paymentmethod.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].paymentmethod.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].user": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].payments[].user.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].user.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].payments[].user.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].period_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].staff": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "data.receipts[].table": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.receipts[].taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.receipts[].taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.receipts[].taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.receipts[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.sales.nb_cancelled_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.nb_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.sales.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.sales.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.sales.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales.total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.staff": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.staff.nb_cancelled_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.staff.nb_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.staff.nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.staff.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.staff.total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.staff.total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total.nb_cancelled_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.nb_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total.total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.user": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.user.external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.user.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.user.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "succeeded": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "version": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  }
+}

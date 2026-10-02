@@ -11,6 +11,7 @@ l'analytics est dans test_nr_salesdata_revenue_reconciliation.
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/sales_summary.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.17 ; `id` et dates = ceux d'`archives` |
 | test_02 | `total_sales` = Σ des lignes `sales` (TTC, HT, tickets, couverts) |
 | test_03 | TVA : Σ `total_with_taxes` = TTC, Σ `total_without_taxes` = HT, Σ `amount` = TTC − HT |
@@ -28,7 +29,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import TOL, assert_input_errors, assert_wrong_token_refused, by_seq, data, device, scope
+from _salesdata import TOL, assert_fields, assert_input_errors, assert_wrong_token_refused, by_seq, data, device, scope
 
 FIELDS = ("sales_incl_taxes", "sales_excl_taxes", "nb_receipts", "nb_seats")
 
@@ -36,6 +37,10 @@ FIELDS = ("sales_incl_taxes", "sales_excl_taxes", "nb_receipts", "nb_seats")
 @pytest.fixture(scope="module")
 def summaries() -> dict[int, dict]:
     return {seq: data("sales_summary", sequential_id=seq) for seq in scope()}
+
+
+def test_00_fields():
+    assert_fields("sales_summary")
 
 
 def test_01_archive_matches_the_list(summaries):

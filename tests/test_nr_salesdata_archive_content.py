@@ -11,6 +11,7 @@ ticket (loyalty, customer, delivery_id) ont leurs tests : 2121, 2203, 2223.
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/archive_content.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.15 (une version derrière les autres actions) ; `id` et dates = ceux d'`archives` |
 | test_02 | `total` (TTC, nb_receipts, nb_cancelled_receipts) = somme des tickets |
 | test_03 | chaque ticket non annulé : Σ paiements = `total_with_taxes` |
@@ -33,7 +34,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import assert_input_errors, assert_wrong_token_refused, by_seq, data, device, scope
+from _salesdata import assert_fields, assert_input_errors, assert_wrong_token_refused, by_seq, data, device, scope
 
 
 @pytest.fixture(scope="module")
@@ -43,6 +44,10 @@ def contents() -> dict[int, dict]:
 
 def kept(content: dict) -> list[dict]:
     return [r for r in content.get("receipts") or [] if not r.get("cancelled")]
+
+
+def test_00_fields():
+    assert_fields("archive_content")
 
 
 def test_01_archive_matches_the_list(contents):

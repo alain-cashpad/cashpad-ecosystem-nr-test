@@ -1,0 +1,391 @@
+{
+  "context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "context.administrative_code": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.server_name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.site_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.archive": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.archive.date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.archive.date_created": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.archive.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.archive.sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer.cashregister": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer.cashregister.external_id": {
+    "required": false,
+    "types": [
+      "null"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer.cashregister.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer.cashregister.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].cashcontainer.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].amount_total": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].cash_float_in": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].date_closed": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].date_opened": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].amount_total": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].method": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].method.external_id": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].method.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].method.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions[].date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions[].description": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].movements[].transactions[].transaction": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].amount_total": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].detail": {
+    "required": false,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].detail[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].detail[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].detail[].quantity": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].method": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].method.external_id": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].method.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].method.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions[].date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions[].receipt_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].payments[].transactions[].transaction": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[].amount_total": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[].method": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[].method.external_id": {
+    "required": false,
+    "types": [
+      "null",
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[].method.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.cashcontainers[].sessions[].summary[].method.name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "succeeded": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "timezone": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "version": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  }
+}

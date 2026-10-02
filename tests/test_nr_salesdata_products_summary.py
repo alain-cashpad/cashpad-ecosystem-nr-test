@@ -10,6 +10,7 @@ l'analytics (et la convention des menus) est dans test_nr_digested_data_public_a
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/products_summary.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.17 ; `id` et dates = ceux d'`archives` |
 | test_02 | `total_incl_taxes` / `total_excl_taxes` = TTC / HT de `sales_summary` |
 | test_03 | Σ des `total` produits = `total_incl_taxes`, à `TOL` près (arrondis de la répartition des menus : 5 millièmes au plus) |
@@ -26,12 +27,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import TOL, assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
+from _salesdata import TOL, assert_fields, assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
 
 
 @pytest.fixture(scope="module")
 def summaries() -> dict[int, dict]:
     return {seq: data("products_summary", sequential_id=seq) for seq in scope()}
+
+
+def test_00_fields():
+    assert_fields("products_summary")
 
 
 def test_01_archive_matches_the_list(summaries):

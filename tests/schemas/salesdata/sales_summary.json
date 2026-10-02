@@ -1,0 +1,254 @@
+{
+  "context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "context.administrative_code": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.server_name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.site_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.date_created": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_begin_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.range_end_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.sales": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.sales[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.sales[].consumptionmode": {
+    "required": false,
+    "types": [
+      "null"
+    ]
+  },
+  "data.sales[].location": {
+    "required": false,
+    "types": [
+      "null"
+    ]
+  },
+  "data.sales[].nb_products": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.sales[].nb_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].sales_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].sales_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.sales[].taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.sales[].taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.sales[].taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sales[].taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.nb_products": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.nb_receipts": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.nb_seats": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.sales_excl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.sales_incl_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.taxes": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data.total_sales.taxes[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data.total_sales.taxes[].amount": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.taxes[].external_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data.total_sales.taxes[].rate": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.taxes[].total_with_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "data.total_sales.taxes[].total_without_taxes": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "succeeded": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "timezone": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "version": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "context": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "context.administrative_code": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.server_name": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "context.site_id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data": {
+    "required": true,
+    "types": [
+      "list"
+    ]
+  },
+  "data[]": {
+    "required": true,
+    "types": [
+      "dict"
+    ]
+  },
+  "data[].id": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data[].range_begin_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data[].range_end_date": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "data[].sequential_id": {
+    "required": true,
+    "types": [
+      "int"
+    ]
+  },
+  "succeeded": {
+    "required": true,
+    "types": [
+      "bool"
+    ]
+  },
+  "timezone": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  },
+  "version": {
+    "required": true,
+    "types": [
+      "str"
+    ]
+  }
+}

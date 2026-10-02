@@ -9,6 +9,7 @@ LECTURE SEULE. Périmètre : les 12 dernières archives du BO.
 
 | Test | Règle |
 |---|---|
+| test_00 | structure : aucun champ figé (`schemas/salesdata/cashcontainers.json`) ne disparaît ni ne change de type ; un champ nouveau est seulement affiché |
 | test_01 | enveloppe v2.17 ; `archive.id` / `archive.sequential_id` = ceux d'`archives` |
 | test_02 | chaque session : `amount_total` = Σ de son `summary` par moyen de paiement |
 | test_03 | Σ `summary` par moyen (toutes sessions) = paiements des tickets non annulés + mouvements de caisse (`cashmovements`) d'`archive_content` |
@@ -29,7 +30,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from _salesdata import assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
+from _salesdata import assert_fields, assert_input_errors, assert_wrong_token_refused, by_seq, data, scope
 
 
 @pytest.fixture(scope="module")
@@ -46,6 +47,10 @@ def per_method(rows, amount="amount_total") -> dict[str, int]:
     for r in rows:
         out[(r.get("method") or r.get("paymentmethod"))["id"].upper()] += r.get(amount) or 0
     return {k: v for k, v in out.items() if v}
+
+
+def test_00_fields():
+    assert_fields("cashcontainers")
 
 
 def test_01_archive_matches_the_list(containers):
