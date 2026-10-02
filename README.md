@@ -30,6 +30,7 @@ Réécrits le 2026-09-29 depuis les deux anciens repos, aux conventions de celui
 | `test_nr_partners_order_menu` | `partner_order_with_menu` | **ticket payé** |
 | `test_nr_partners_course_request` | `partner_course_request` | **ticket ouvert** |
 | `test_nr_partners_payments` | `inject_single_payment`, `…_negative_payment`, `inject_multiple_payments` | **3 tickets + paiements** |
+| `test_nr_smoke_post_deploy` | aucun : smoke **juste après un déploiement** (`make smoke`) — services up sur une seule build, `check` live et archivé, dernière archive digérée, signatures d'erreur du 2026-10-01 | non (lecture seule) ; pas de prod |
 | `test_nr_digested_data_public_api` | aucun : API analytics publique (ventes par produit et paiements par moyen = BO, top N, `samePeriodLastYear` = requête directe un an plus tôt) | non (lecture seule) ; jeton digested-data, sinon skip |
 | `test_nr_salesdata_revenue_reconciliation` | aucun : chaîne caisse → BO → analytics sur les 12 dernières archives (CA, HT, tickets, TVA par taux), repris du skill `bov2-revenue-reconciliation` | non (lecture seule) ; VPN et jeton digested-data, sinon skip |
 | `test_nr_partners_receipt_event_notification` | aucun : première notification SORTANTE (`order_new_receipt_event` vers `delarte`), lue dans les logs Elasticsearch | **1 ticket ouvert** ; exige le web proxy de la caisse sur la cible |
@@ -112,6 +113,7 @@ Deux lancements **séparés** : les tests d'interface (navigateur) et le reste. 
 | `make ui-browsers` | installe le Chromium de `PLAYWRIGHT_VERSION` — **une fois**, et après chaque changement de version | ~1 min |
 | `make test-ui` | les 4 tests d'interface `*_ui.py` (`2213`, `2215`, `2217`, `2284`) | ~1 min 30 |
 | `make test-writes` | les `test_nr_*` avec `NR_ALLOW_WRITES=1` : **crée des tickets sur la caisse** et modifie puis restaure la config Deliverect | ~2 min |
+| `make smoke` | `test_nr_smoke_post_deploy` seul, juste après un déploiement, sur la plateforme déployée | ~10 s |
 | `make test-all` | `test` puis `test-ui` | ~6 min 30 |
 
 Arguments pytest : `make test PYTEST_ARGS="-k 2190 -x"` (défaut `-v`). Cible préprod : `NR_TARGET=preprod make test` (tests via `_target.py` / `_nr.py` seulement).

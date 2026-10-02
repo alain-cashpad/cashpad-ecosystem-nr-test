@@ -6,6 +6,7 @@
 #   make ui-browsers   installe le Chromium qui correspond à PLAYWRIGHT_VERSION
 #   make test-writes   test_nr_* qui créent des tickets / modifient une config (NR_ALLOW_WRITES=1)
 #   make test-all      test + test-ui
+#   make smoke         smoke test juste après un déploiement (lecture seule, ~10 s)
 #
 # Arguments pytest supplémentaires : make test PYTEST_ARGS="-k 2190 -x"
 
@@ -23,7 +24,7 @@ UI_DEPS = --with "playwright==$(PLAYWRIGHT_VERSION)" --with "pytest-playwright==
 # test_test.py ne s'importe pas (SyntaxError de génération Postman), cf. README.
 IGNORE = --ignore=tests/test_test.py
 
-.PHONY: help test test-ui ui-browsers test-writes test-all
+.PHONY: help test test-ui ui-browsers test-writes test-all smoke
 
 help:
 	@sed -n '1,10p' Makefile
@@ -41,3 +42,6 @@ test-writes:
 	NR_ALLOW_WRITES=1 uv run $(DEPS) pytest tests/test_nr_*.py $(PYTEST_ARGS)
 
 test-all: test test-ui
+
+smoke:
+	uv run $(DEPS) pytest tests/test_nr_smoke_post_deploy.py $(PYTEST_ARGS)
