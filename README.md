@@ -30,6 +30,7 @@ Réécrits le 2026-09-29 depuis les deux anciens repos, aux conventions de celui
 | `test_nr_partners_order_menu` | `partner_order_with_menu` | **ticket payé** |
 | `test_nr_partners_course_request` | `partner_course_request` | **ticket ouvert** |
 | `test_nr_partners_payments` | `inject_single_payment`, `…_negative_payment`, `inject_multiple_payments` | **3 tickets + paiements** |
+| `test_nr_salesdata_<endpoint>` (×6 : `archives`, `archive_content`, `sales_summary`, `products_summary`, `users_summary`, `cashcontainers`) | aucun : un fichier par endpoint salesdata — enveloppe et version, cohérence interne, recoupement avec les autres endpoints et la caisse (VPN), erreurs d'entrée, mauvais token. Socle `tests/_salesdata.py` | non (lecture seule) |
 | `test_nr_internal_rpc_contracts` | aucun : contrats entre services — sollicite les internal-rpc par des appels publics, puis cherche dans les logs les corps refusés et les appels internes en erreur (rollback du 2026-10-01) | non (lecture seule) ; logs Elasticsearch |
 | `test_nr_partners_stock_state` | aucun : `stocks/v1/state` = état de la caisse (`orders/get_products_states`), et `precheck_order?check_stocks=true` qui refuse un produit désactivé | non (precheck sans ticket) ; VPN pour test_01 |
 | `test_nr_smoke_post_deploy` | aucun : smoke **juste après un déploiement** (`make smoke`) — services up sur une seule build, `check` live et archivé, dernière archive digérée, signatures d'erreur du 2026-10-01 | non (lecture seule) ; pas de prod |
