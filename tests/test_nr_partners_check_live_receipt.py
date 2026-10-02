@@ -3,14 +3,14 @@ from __future__ import annotations
 """
 Test de non-régression — incident PROD du 2026-10-01 (paiement à table Sunday / Flunch)
 
-Chaque run pousse TROIS tickets non payés (donc non archivés), puis lit leur note par
+Chaque run pousse QUATRE tickets non payés (donc non archivés), puis lit leur note par
 l'action `check` de la Partner API :
 
     POST {base}/api/orders/v1/{INSTALLATION_ID}/cashpad/push_order_sync
     GET  {base}/api/payments/v2/{INSTALLATION_ID}/check?receipt_id=<UUID>
     GET  {base}/api/payments/v2/{INSTALLATION_ID}/check?sequential_id=<N>
 
-⚠️ CRÉE TROIS TICKETS NON PAYÉS sur la caisse à chaque run (`tickets_guard`,
+⚠️ CRÉE QUATRE TICKETS NON PAYÉS sur la caisse à chaque run (`tickets_guard`,
 NR_ALLOW_WRITES=1). Ils restent ouverts : la suite ne les encaisse pas.
 
 ## Le chemin gardé
@@ -95,16 +95,17 @@ pytestmark = tickets_guard()
 
 POUTINE = {"pos_id": "12ac180d-9ec1-4741-89ab-9cfb3eb7d81e", "price": 7.0}  # « Poutine Vladimir tsar »
 BURGER = {"pos_id": "C3719D2A-AC84-4102-BF50-24FD174AD0A8", "price": 18.6}  # « Burger Comté - XL »
+FREE_TABLES = range(3, 13)  # tables 1 et 2 : tickets ouverts des autres tests de la suite
 ADDONS = [
     {"pos_id": "D437F6FC-D997-4BD4-BDEC-1034E77AFD86", "price": 0, "quantity": 1},    # « Bleu »
     {"pos_id": "23E8ED30-A389-499B-97F5-67774EE578CF", "price": 2.9, "quantity": 1},  # « Supp Frites »
 ]
 
 
-def push_open_ticket(label: str, items: list[dict], customer: dict) -> dict:
+def push_open_ticket(label: str, items: list[dict], customer: dict, table: int = 1) -> dict:
     body = {"customer": customer, "order": {
         "id": unique_order_id(f"nr-check-{label}"), "date_order": int(time.time()), "channel": "CHANNEL",
-        "nb_eaters": 1, "comment": f"NR check live {label}", "table_number": 1,
+        "nb_eaters": 1, "comment": f"NR check live {label}", "table_number": table,
         "items": items, "payments": [],
     }}
     return assert_pushed(*push_order(body))
@@ -148,6 +149,24 @@ def customer_ticket():
     customer = site_customer()
     pushed = push_open_ticket("customer", [{**POUTINE, "quantity": 1, "production_level": 0}], {"id": customer["id"]})
     return pushed, customer
+
+
+def free_table() -> int:
+    """Première table de FREE_TABLES sans ticket ouvert (`check?table=` → 422). `check` par
+    table rend le PLUS ANCIEN ticket ouvert de la table (observé le 2026-10-02 : table 2 →
+    3273, avec 3274 et 3276 ouverts aussi) : sur une table occupée, le test ne prouverait
+    rien. Les tickets de la suite ne sont pas encaissés, une table se libère à la clôture."""
+    for table in FREE_TABLES:
+        status, payload = partner_call("payments", 2, "check", params={"table": table})
+        if status == 422:
+            return table
+    pytest.skip(f"aucune table libre parmi {list(FREE_TABLES)} : clôturer le service de la caisse")
+
+
+@pytest.fixture(scope="module")
+def table_ticket():
+    table = free_table()
+    return push_open_ticket("table", [{**POUTINE, "quantity": 1, "production_level": 0}], {}, table=table), table
 
 
 @pytest.fixture(scope="module")
@@ -214,3 +233,11 @@ def test_04_check_live_receipt_with_customer(customer_ticket):
     data = check(receipt_id=ticket["receipt_id"])
     assert_is_ticket(data, ticket)
     assert items_by_product(data).get(POUTINE["pos_id"].upper()), f"Poutine absente : {data['items']!r}"
+
+
+def test_05_check_live_receipt_by_table(table_ticket):
+    """Troisième sélecteur de `check`, celui du paiement à table (Sunday, Flunch)."""
+    ticket, table = table_ticket
+    data = check(table=table)
+    assert_is_ticket(data, ticket)
+    assert str(data.get("table")) == str(table), f"table {data.get('table')!r} ≠ {table}"
